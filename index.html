@@ -1,59 +1,67 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-   <link rel="stylesheet" href="styles.css">
-   
+  <meta charset="UTF-8">
+  <title>Kalkulator PyScript</title>
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 <body>
-<header>
-<nav>
-<ul>
-  <li><a href="index.html">Home</a></li>
-  <li><a href="dp.html">Design Process</a></li>
-  <li><a href="kalkulator.html">Produk</a></li>
-  <li><a href="Python.html">Gallery</a></li>
-</nav>
-</ul>
 
-</header>
+  <h2>Kalkulator PyScript</h2>
 
-<main>
-<h1>Perkenalan Kelompok</h1>
-<pre>
-<p>Kami adalah .... bla..bla dgndfgnkdfgndf klfdjgkfdljh  dskfgjdg
-fgfdjkghdfjkh hdfjsdkfsd dfgjdfjgdfgn fdgkjfdkgjf dkfjgfdjgdfg fdkgdjg
-dgkfdfglhjdh Kami adalah .... bla..bla dgndfgnkdfgndf klfdjgkfdljh  dskfgjdg
-fgfdjkghdfjkh hdfjsdkfsd dfgjdfjgdfgn fdgkjfdkgjf dkfjgfdjgdfg fdkgdjg
-dgkfdfglhjdh Kami adalah .... bla..bla dgndfgnkdfgndf klfdjgkfdljh  dskfgjdg
-fgfdjkghdfjkh hdfjsdkfsd dfgjdfjgdfgn fdgkjfdkgjf dkfjgfdjgdfg fdkgdjg
-dgkfdfglhjdh Kami adalah .... bla..bla dgndfgnkdfgndf klfdjgkfdljh  dskfgjdg
-fgfdjkghdfjkh hdfjsdkfsd dfgjdfjgdfgn fdgkjfdkgjf dkfjgfdjgdfg fdkgdjg
-dgkfdfglhjdh  Kami adalah .... bla..bla dgndfgnkdfgndf klfdjgkfdljh  dskfgjdg
-fgfdjkghdfjkh hdfjsdkfsd dfgjdfjgdfgn fdgkjfdkgjf dkfjgfdjgdfg fdkgdjg
-dgkfdfglhjdh
-</p>
+  <label>Bilangan 1:</label><br>
+  <input id="bil1" type="number"><br><br>
 
+  <label>Bilangan 2:</label><br>
+  <input id="bil2" type="number"><br><br>
 
-<p class="p2">dgjndfgj dfkgjfdkjg dfkgjfdkg dfkgjkdfg dfkgj
-Kami adalah .... bla..bla dgndfgnkdfgndf klfdjgkfdljh  dskfgjdg
-fgfdjkghdfjkh hdfjsdkfsd dfgjdfjgdfgn fdgkjfdkgjf dkfjgfdjgdfg fdkgdjg
-dgkfdfglhjdh  Kami adalah .... bla..bla dgndfgnkdfgndf klfdjgkfdljh  dskfgjdg
-fgfdjkghdfjkh hdfjsdkfsd dfgjdfjgdfgn fdgkjfdkgjf dkfjgfdjgdfg fdkgdjg
-dgkfdfglhjdh Kami adalah .... bla..bla dgndfgnkdfgndf klfdjgkfdljh  dskfgjdg
-fgfdjkghdfjkh hdfjsdkfsd dfgjdfjgdfgn fdgkjfdkgjf dkfjgfdjgdfg fdkgdjg
-dgkfdfglhjdh
-</p>
+  <label>Operasi:</label><br>
+  <select id="operator">
+    <option value="+">Penjumlahan</option>
+    <option value="-">Pengurangan</option>
+    <option value="*">Perkalian</option>
+    <option value="/">Pembagian</option>
+  </select><br><br>
 
+  <button id="tombol">Hitung</button>
 
+  <h3>Hasil: <span id="hasil">-</span></h3>
 
+  <!-- Tambahkan py-env agar modul pyodide bisa digunakan -->
+  <py-config>
+    packages = []
+  </py-config>
 
+  <py-script>
+from js import document
+from pyodide import create_proxy
 
+def hitung(event):
+    try:
+        bil1 = float(document.getElementById("bil1").value)
+        bil2 = float(document.getElementById("bil2").value)
+        op = document.getElementById("operator").value
 
-</main>
+        if op == '+':
+            hasil = bil1 + bil2
+        elif op == '-':
+            hasil = bil1 - bil2
+        elif op == '*':
+            hasil = bil1 * bil2
+        elif op == '/':
+            hasil = bil1 / bil2 if bil2 != 0 else "Tak hingga"
+        else:
+            hasil = "Operator tidak valid"
 
-<footer>
-<p>design by: ...</p>
+        document.getElementById("hasil").innerText = str(hasil)
+    except:
+        document.getElementById("hasil").innerText = "Error"
 
+# Hubungkan tombol ke fungsi
+tombol = document.getElementById("tombol")
+tombol.addEventListener("click", create_proxy(hitung))
+  </py-script>
 
 </body>
 </html>
